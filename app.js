@@ -12,9 +12,9 @@ app.use(express.json());
 
 function createDBConnection() {
   return mysql.createConnection({
-    host: "10.0.100.109",
+    host: "localhost",
     user: "app",
-    password: "Clandestinos.2022",
+    password: "App.2023",
     database: "db_clande",
   });
 }
@@ -59,6 +59,9 @@ const partidosRoutes = require("./routes/partidos");
 
 app.use("/torneos", torneosRoutes);
 
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK' });
+});
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

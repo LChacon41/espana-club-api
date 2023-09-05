@@ -37,11 +37,11 @@ exports.getTorneoById = (req, res) => {
 
 exports.createTorneo = (req, res) => {
   const db = getDb();
-  const { name, date, location } = req.body;
+  const { nombre, fecha, status } = req.body;
   const query =
-    "INSERT INTO tournaments (name, date, location) VALUES (?, ?, ?)";
+    "INSERT INTO tournaments (nombre, fecha, status) VALUES (?, ?, ?)";
 
-  db.query(query, [name, date, location], (err, result) => {
+  db.query(query, [nombre, fecha, status], (err, result) => {
     if (err) {
       console.error("Error creating tournament:", err);
       res.status(500).json({ message: "Server Error" });
