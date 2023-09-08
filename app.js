@@ -58,6 +58,7 @@ const partidosRoutes = require("./routes/partidos");
 // Routes
 
 app.use("/torneos", torneosRoutes);
+app.use("/jugadores", jugadoresRoutes);
 
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK' });
