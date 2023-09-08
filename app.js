@@ -25,19 +25,23 @@ let db = createDBConnection();
 function connectToDB() {
   db.connect((err) => {
     if (err) {
-      console.error('Error connecting to MySQL:', err);
+      console.error("Error connecting to MySQL:", err);
       // Attempt to reconnect after a delay
       setTimeout(connectToDB, 2000); // Adjust the delay as needed
     } else {
-      console.log('Connected to MySQL database');
+      console.log("Connected to MySQL database de Miguel");
     }
   });
 
   // Handle disconnection
-  db.on('error', (err) => {
-    console.error('MySQL error:', err);
-    if (err.code === 'PROTOCOL_CONNECTION_LOST' || err.code === 'ECONNRESET' || err.code === 'ETIMEDOUT') {
-      console.error('MySQL connection was lost. Attempting to reconnect...');
+  db.on("error", (err) => {
+    console.error("MySQL error:", err);
+    if (
+      err.code === "PROTOCOL_CONNECTION_LOST" ||
+      err.code === "ECONNRESET" ||
+      err.code === "ETIMEDOUT"
+    ) {
+      console.error("MySQL connection was lost. Attempting to reconnect...");
       db = createDBConnection(); // Create a new connection
       connectToDB(); // Attempt to reconnect
     } else {
@@ -60,8 +64,8 @@ const partidosRoutes = require("./routes/partidos");
 app.use("/torneos", torneosRoutes);
 app.use("/jugadores", jugadoresRoutes);
 
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK' });
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "OK" });
 });
 // Start the server
 const PORT = process.env.PORT || 5000;
