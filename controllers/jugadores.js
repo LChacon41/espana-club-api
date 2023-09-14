@@ -1,52 +1,36 @@
-const { getDb } = require("../app");
+const { pool } = require("../config/db");
 
-exports.getAllJugadores = (req, res) => {
+exports.getAllJugadores = async (req, res) => {
   const db = getDb();
   const query = "SELECT * FROM medida_jugadores";
+  result = await pool.query(query);
+  res.json(results);
 
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error fetching jugadores:", err);
-      res.status(500).json({ message: "Server Error" });
-      return;
-    }
-
-    res.json(results);
-  });
 };
 
-exports.getJugadorById = (req, res) => {
+exports.getJugadorById = async (req, res) => {
   const db = getDb();
   const query = "SELECT * FROM medida_jugadores WHERE id_jugador=?";
   const { id } = req.params;
-  db.query(query, [id], (err, results) => {
-    if (err) {
-      console.error("Error fetching jugador:", err);
-      res.status(500).json({ message: "Server Error" });
-      return;
-    }
+  const isEmail = id.includes("@");
 
-    if (results.length === 0) {
-      res.status(404).json({ message: "Jugador not found" });
-      return;
-    }
-    const jugador = results[0];
-    res.json(jugador);
-  });
+  result = await pool.query(query);
+
+  if (results.length === 0) {
+    res.status(404).json({ message: "Jugador no encontrado" });
+    return;
+  }
+  const jugador = results[0];
+  res.json(jugador);
+
 };
 
-exports.createJugador = (req, res) => {
+exports.createJugador = async (req, res) => {
   const db = getDb();
   const { nombre_completo, rama } = req.body;
   const query =
     "INSERT INTO medida_jugadores (nombre_completo, rama) VALUES (?, ?)";
 
-  db.query(query, [nombre_completo, rama], (err, result) => {
-    if (err) {
-      console.error("Error creating jugador:", err);
-      res.status(500).json({ message: "Server Error" });
-      return;
-    }
-    res.status(201).json({ id: result.insertId, nombre_completo, rama });
-  });
+  result = await pool.query(query);
+  res.status(201).json({ id: result.insertId, nombre_completo, rama });
 };

@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql2");
 const app = express();
+const db = require('./config/db');
 
 // Middleware
 
@@ -9,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Database connection creation
-
+/*
 function createDBConnection() {
   return mysql.createConnection({
     host: "localhost",
@@ -54,7 +55,7 @@ connectToDB(); // Initial connection
 
 module.exports = {
   getDb: () => db, // Export a function to retrieve the current db connection
-};
+};*/
 
 const torneosRoutes = require("./routes/torneos");
 const jugadoresRoutes = require("./routes/jugadores");
