@@ -4,14 +4,10 @@ exports.getRivalidad = (req, res) => {
   const db = getDb();
   const { id1, id2 } = req.params;
 
-  const query = "SELECT * FROM medida_datos_torneos";
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error fetching tournaments:", err);
-      res.status(500).json({ message: "Server Error" });
-      return;
-    }
-
-    res.json(results);
-  });
+  if (id1 && id2) {
+    // Do something with id1 and id2
+    res.json({ message: `Rivalry between Player ${id1} and Player ${id2}` });
+  } else {
+    res.status(400).json({ error: "Both player IDs are required" });
+  }
 };
