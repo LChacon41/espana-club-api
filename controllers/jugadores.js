@@ -1,7 +1,6 @@
 const { pool } = require("../config/db");
 
 exports.getAllJugadores = async (req, res) => {
-  const db = getDb();
   const query = "SELECT * FROM medida_jugadores";
   result = await pool.query(query);
   res.json(results);
@@ -9,7 +8,6 @@ exports.getAllJugadores = async (req, res) => {
 };
 
 exports.getJugadorById = async (req, res) => {
-  const db = getDb();
   const query = "SELECT * FROM medida_jugadores WHERE id_jugador=?";
   const { id } = req.params;
   const isEmail = id.includes("@");
@@ -26,7 +24,6 @@ exports.getJugadorById = async (req, res) => {
 };
 
 exports.createJugador = async (req, res) => {
-  const db = getDb();
   const { nombre_completo, rama } = req.body;
   const query =
     "INSERT INTO medida_jugadores (nombre_completo, rama) VALUES (?, ?)";
