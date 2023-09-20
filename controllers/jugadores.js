@@ -2,7 +2,7 @@ const { pool } = require("../config/db");
 
 exports.getAllJugadores = async (req, res) => {
   const query = "SELECT * FROM medida_jugadores";
-  result = await pool.query(query);
+  result = await pool.promise.query(query);
   res.json(results);
 
 };
