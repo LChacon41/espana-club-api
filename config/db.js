@@ -9,5 +9,6 @@ const pool = mysql.createPool({
   connectionLimit: 10, // Adjust this based on your requirements
   queueLimit: 0,
 });
+const promisePool = pool.promise();
 
-module.exports = pool.promise();
+module.exports = promisePool;
