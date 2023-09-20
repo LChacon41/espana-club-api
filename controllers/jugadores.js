@@ -1,4 +1,4 @@
-const { pool } = require("../config/db");
+const pool  = require("../config/db").pool;
 
 exports.getAllJugadores = async (req, res) => {
   const query = "SELECT * FROM medida_jugadores";
