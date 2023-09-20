@@ -3,46 +3,62 @@ const { pool } = require("../config/db");
 exports.getAllJugadores = async (req, res) => {
   const query = "SELECT * FROM medida_jugadores";
   try {
-    const [results] = await pool.execute(query); // Using pool.execute() for promise-based API
-    console.log(results);
-    //res.json(results[0]);
+    pool.query(query, (err, results) => {
+      console.log(results);
+      if (err) {
+        console.error("Error query:", err);
+      } else {
+        res.json(results);
+      }
+    });
   } catch (error) {
     console.error("Error fetching jugadores:", error);
-    res.status(500).json({ error: "Internal Server Error",msg:error });
+    res.status(500).json({ error: "Internal Server Error", msg: error });
   }
 };
 
-exports.getJugadorById = async (req, res) => {
-  const query = "SELECT * FROM medida_jugadores WHERE id_jugador=?";
+exports.getJugadorById = (req, res) => {
   const { id } = req.params;
   const isEmail = id.includes("@");
+  let query = "";
+  if (isEmail) {
+    query =
+      "SELECT * FROM medida_jugadores WHERE id_jugador=(SELECT id_jugador FROM dimension_usuarios WHERE correo=?)";
+  } else {
+    query = "SELECT * FROM medida_jugadores WHERE id_jugador=?";
+  }
 
-  try {
-    const [results, fields] = await pool.execute(query, [id]); // Pass values as an array
+  pool.query(query, [id], (err, results) => {
+    if (err) {
+      console.error("Error query:", err);
+      res.status(500).json({ error: "Internal Server Error", msg: err });
+      return;
+    }
+
     if (results.length === 0) {
       res.status(404).json({ message: "Jugador no encontrado" });
       return;
     }
+
     const jugador = results[0];
     res.json(jugador);
-  } catch (error) {
-    console.error("Error fetching jugadores:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+  });
 };
 
-exports.createJugador = async (req, res) => {
+exports.createJugador = (req, res) => {
   const { nombre_completo, rama } = req.body;
   const query =
     "INSERT INTO medida_jugadores (nombre_completo, rama) VALUES (?, ?)";
 
-  try {
-    const [result, fields] = await pool.execute(query, [nombre_completo, rama]); // Pass values as an array
+  pool.query(query, [nombre_completo, rama], (err, result) => {
+    if (err) {
+      console.error("Error query:", err);
+      res.status(500).json({ error: "Internal Server Error", msg: err });
+      return;
+    }
+
     res.status(201).json({ id: result.insertId, nombre_completo, rama });
-  } catch (error) {
-    console.error("Error creating jugador:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+  });
 };
 
 /*
