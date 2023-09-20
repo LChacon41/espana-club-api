@@ -1,4 +1,4 @@
-const pool  = require("../config/db").pool;
+const { pool } = require("../config/db");
 
 exports.getAllJugadores = async (req, res) => {
   const query = "SELECT * FROM medida_jugadores";
@@ -7,8 +7,8 @@ exports.getAllJugadores = async (req, res) => {
     console.log(results);
     //res.json(results[0]);
   } catch (error) {
-    console.error('Error fetching jugadores:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error fetching jugadores:", error);
+    res.status(500).json({ error: "Internal Server Error",msg:error });
   }
 };
 
@@ -26,24 +26,24 @@ exports.getJugadorById = async (req, res) => {
     const jugador = results[0];
     res.json(jugador);
   } catch (error) {
-    console.error('Error fetching jugadores:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error fetching jugadores:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 exports.createJugador = async (req, res) => {
   const { nombre_completo, rama } = req.body;
-  const query = "INSERT INTO medida_jugadores (nombre_completo, rama) VALUES (?, ?)";
+  const query =
+    "INSERT INTO medida_jugadores (nombre_completo, rama) VALUES (?, ?)";
 
   try {
     const [result, fields] = await pool.execute(query, [nombre_completo, rama]); // Pass values as an array
     res.status(201).json({ id: result.insertId, nombre_completo, rama });
   } catch (error) {
-    console.error('Error creating jugador:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error creating jugador:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 
 /*
 exports.getAllJugadores = async (req, res) => {
