@@ -5,7 +5,7 @@ exports.getAllJugadores = async (req, res) => {
   try {
     const [results, fields] = await pool.execute(query); // Using pool.execute() for promise-based API
     console.log(results);
-    res.json(results[0]);
+    //res.json(results[0]);
   } catch (error) {
     console.error('Error fetching jugadores:', error);
     res.status(500).json({ error: 'Internal Server Error' });
