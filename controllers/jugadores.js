@@ -3,7 +3,7 @@ const { pool } = require("../config/db");
 exports.getAllJugadores = async (req, res) => {
   const query = "SELECT * FROM medida_jugadores";
   try {
-    const [results, fields] = await pool.execute(query); // Using pool.execute() for promise-based API
+    const [results] = await pool.execute(query); // Using pool.execute() for promise-based API
     console.log(results);
     //res.json(results[0]);
   } catch (error) {
